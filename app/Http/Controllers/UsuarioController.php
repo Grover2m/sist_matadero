@@ -61,7 +61,8 @@ class UsuarioController extends Controller
      */
     public function show($id)
     {
-        //
+         $user = User::FindOrFail($id);
+        return view("admin.usuario.mostrar", compact("user"));
     }
 
     /**
@@ -73,6 +74,11 @@ class UsuarioController extends Controller
     public function edit($id)
     {
         //
+        $user = User::FindOrFail($id);
+        return view("admin.usuario.editar", compact("user"));
+ 
+
+
     }
 
     /**
@@ -85,6 +91,21 @@ class UsuarioController extends Controller
     public function update(Request $request, $id)
     {
         //
+
+        $request -> validate([
+            "name" => "required",
+            "email" => "required|email|unique:users,email,$id",
+            "password" => "required"
+        ]);
+
+        $usuario = User::FindOrFail($id);
+
+        $usuario->name = $request->name;
+        $usuario->email = $request->email;
+        $usuario->password = bcrypt( $request->password);
+        $usuario ->update();
+        //responder
+        return redirect("/usuario");
     }
 
     /**
@@ -95,6 +116,9 @@ class UsuarioController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $usuario = User::FindOrFail($id);
+        $usuario->delete;
+
+        return redirect("/usuario");
     }
 }
