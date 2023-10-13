@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SocioController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,7 @@ Route::middleware([
     'verified'
 ])->group(function () {
 Route::resource("usuario",UsuarioController::class);
+Route::resource('socio',SocioController::class);
 });
 
 Route::middleware([
